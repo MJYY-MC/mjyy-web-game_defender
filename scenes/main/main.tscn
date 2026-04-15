@@ -13,7 +13,7 @@ position = Vector2( 66, 654 )
 [node name="player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 130, 590 )
 
-[node name="border" type="StaticBody2D" parent="."]
+[node name="border" type="StaticBody2D" parent="." groups=["bulletTarget"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border"]
 position = Vector2( 0, 720 )

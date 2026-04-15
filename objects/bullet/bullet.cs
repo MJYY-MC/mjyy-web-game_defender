@@ -14,15 +14,25 @@ public class Bullet : RigidBody2D
 	/// 是否正在执行消失
 	/// </summary>
 	private bool doingGone = false;
+	private void DoGone() {
+		if (!doingGone) {
+			doingGone = true;
+			goneAnim.PlayGoneAnim(this);
+		}
+	}
+
 #pragma warning disable IDE0051
 	private void OnBulletBody_entered(object body) {
 #pragma warning restore IDE0051
 		if (body is Node nodeObj) {
-
-			if (nodeObj.Name=="border" && !doingGone) {
-				doingGone = true;
-				goneAnim.PlayGoneAnim(this);
+			if (nodeObj.IsInGroup("bulletTarget")) {
+				DoGone();
 			}
 		}
 	}
+
+#pragma warning disable IDE0051
+	private void OnGoneTimer_timeout() =>
+#pragma warning restore IDE0051
+		DoGone();
 }
