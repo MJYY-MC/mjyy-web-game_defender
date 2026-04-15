@@ -1,6 +1,18 @@
 using System;
 
 public class GameData{
+
+	public enum GameStateEnum {
+		loading,
+		ready,
+		running,
+		over,
+	}
+	/// <summary>
+	/// 当前游戏状态
+	/// </summary>
+	public GameStateEnum GameState { get; set; } = GameStateEnum.loading;
+
 	/// <summary>
 	/// 主的最大血量
 	/// </summary>

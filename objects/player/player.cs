@@ -21,7 +21,7 @@ public class player : Node2D
 	public float RotationDegMax = 120f;
 
 	public override void _Process(float delta) {
-		{
+		if(DataCore.Instance.gameData.GameState==GameData.GameStateEnum.running){
 			float rotateInput = 0f;
 
 			if (Input.IsActionPressed("key_left") && RotationDegrees > RotationDegMin)
@@ -42,10 +42,12 @@ public class player : Node2D
 	}
 
 	public override void _Input(InputEvent ie) {
-		if (ie.IsActionPressed("key_up")) 
-			ShootBullet(1000);
-		else if(ie.IsActionPressed("key_down"))
-			ShootBullet(500);
+		if (DataCore.Instance.gameData.GameState == GameData.GameStateEnum.running) {
+			if (ie.IsActionPressed("key_up"))
+				ShootBullet(1000);
+			else if (ie.IsActionPressed("key_down"))
+				ShootBullet(500);
+		}
 	}
 
 	/// <summary>

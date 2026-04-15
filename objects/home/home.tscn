@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/img/mjyy_redWarm.png" type="Texture" id=2]
 [ext_resource path="res://objects/home/Home.cs" type="Script" id=3]
 
-[node name="home" type="StaticBody2D" groups=["bulletTarget"]]
+[node name="home" type="StaticBody2D" groups=["bulletTarget", "enemyTarget"]]
 collision_layer = 2
 script = ExtResource( 3 )
 
