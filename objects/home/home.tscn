@@ -2,7 +2,8 @@
 
 [ext_resource path="res://assets/img/mjyylogo-color.png" type="Texture" id=1]
 
-[node name="home" type="Area2D"]
+[node name="home" type="StaticBody2D"]
+collision_layer = 2
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

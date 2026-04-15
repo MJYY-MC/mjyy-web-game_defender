@@ -8,16 +8,36 @@ public class player : Node2D
 	[Export]
 	public float RotationSpeed = 10.0f;
 
+	/// <summary>
+	/// 可旋转角度最小值
+	/// </summary>
+	[Export]
+	public float RotationDegMin = -90f;
+
+	/// <summary>
+	/// 可旋转角度最大值
+	/// </summary>
+	[Export]
+	public float RotationDegMax = 120f;
+
 	public override void _Process(float delta) {
 		{
 			float rotateInput = 0f;
 
-			if (Input.IsActionPressed("key_left"))
+			if (Input.IsActionPressed("key_left") && RotationDegrees > RotationDegMin)
 				rotateInput -= 1f;
-			if (Input.IsActionPressed("key_right"))
+			else {
+				if(RotationDegrees < RotationDegMin)
+					RotationDegrees = RotationDegMin;
+			}
+			if (Input.IsActionPressed("key_right") && RotationDegrees < RotationDegMax)
 				rotateInput += 1f;
+			else {
+				if(RotationDegrees > RotationDegMax)
+					RotationDegrees = RotationDegMax;
+			}
 
-			Rotation += rotateInput * RotationSpeed * delta;
+				Rotation += rotateInput * RotationSpeed * delta;
 		}
 	}
 
