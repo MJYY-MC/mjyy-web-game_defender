@@ -4,6 +4,7 @@
 
 .vs
 
-/dist
+/dist/*
 # html5的编译配置将输出到该文件夹
 /dist/web
+!/dist/.gdignore
