@@ -3,6 +3,7 @@ using System;
 public class GameData{
 
 	public enum GameStateEnum {
+		menu,
 		loading,
 		ready,
 		running,
@@ -11,7 +12,7 @@ public class GameData{
 	/// <summary>
 	/// 当前游戏状态
 	/// </summary>
-	public GameStateEnum GameState { get; set; } = GameStateEnum.loading;
+	public GameStateEnum GameState { get; set; } = GameStateEnum.menu;
 
 	/// <summary>
 	/// 主的最大血量

@@ -17,6 +17,10 @@ public class Home : StaticBody2D
 	}
 
 	private void HomeHealth_Changed(float h) {
+		if (h == 0) {
+			DataCore.Instance.gameData.GameState = GameData.GameStateEnum.over;
+			GetTree().ChangeScene("res://scenes/menu/gameOver/gameOver.tscn");
+		}
 		healthShow.Modulate = new Color(
 			healthShow.Modulate.r, healthShow.Modulate.g, healthShow.Modulate.b, 
 			(1 - DataCore.Instance.gameData.GetHomeHealthPercent())
