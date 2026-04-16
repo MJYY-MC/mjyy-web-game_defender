@@ -12,7 +12,7 @@ config_version=4
 
 config/name="Mjyy-web-game Defender"
 run/main_scene="res://scenes/menu/menu.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/img/mjyylogo-color.png"
 
 [autoload]
 
