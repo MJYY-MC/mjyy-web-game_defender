@@ -20,10 +20,8 @@ public class player : Node2D {
 	public float RotationDegMax = 120f;
 
 	Sprite readyShoot;
-	ScoreChangeShowCreate scoreChangeShow_create;
 	public override void _Ready() {
 		readyShoot = GetNode<Sprite>("readyShoot");
-		scoreChangeShow_create= GetNode<ScoreChangeShowCreate>("/root/main/scoreChangeShow_create");
 	}
 
 	/// <summary>
@@ -114,7 +112,11 @@ public class player : Node2D {
 	/// </summary>
 	/// <param name="bulletSpeed">子弹初速度（像素/秒）</param>
 	private void ShootBullet(float bulletSpeed) {
-		scoreChangeShow_create.Create(1, -1, 1);//DataCore.Instance.gameData.Score -= 1;
+		DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
+			TextKey=1,
+			ScoreChangeValue= -1,
+			Many= 1,
+		});//DataCore.Instance.gameData.Score -= 1;
 
 		var bulletObj = (RigidBody2D)BulletObject.Instance();
 
@@ -147,7 +149,11 @@ public class player : Node2D {
 			}
 			throw new System.Exception("错误的id");
 		}
-		scoreChangeShow_create.Create(2, -3, 6);//DataCore.Instance.gameData.Score -= 18;
+		DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
+			TextKey = 2,
+			ScoreChangeValue = -3,
+			Many = 6,
+		});//DataCore.Instance.gameData.Score -= 18;
 
 		RigidBody2D[] bulletObjs = new RigidBody2D[6];
 

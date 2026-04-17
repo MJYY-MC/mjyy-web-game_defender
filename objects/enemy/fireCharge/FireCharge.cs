@@ -73,7 +73,11 @@ public class FireCharge : RigidBody2D
                 ScoreChangeShowCreate.cs:18 @ void ScoreChangeShowCreate.Create(UInt16 , Int32 , UInt16 )()
                 FireCharge.cs:54 @ void FireCharge.OnFireCharge_bodyEntered(System.Object )()
 				 */
-				GetNode<ScoreChangeShowCreate>("/root/main/scoreChangeShow_create").Create(3, 10, 1);//DataCore.Instance.gameData.Score += 10;
+				DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
+					TextKey = 3,
+					ScoreChangeValue = 10,
+					Many = 1,
+				});//DataCore.Instance.gameData.Score += 10;
 			DoGone();
 		}
 	}

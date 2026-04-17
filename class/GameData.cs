@@ -71,6 +71,10 @@ public class GameData{
 			Score_OnChanged?.Invoke(Score);
 		}
 	}
+	/// <summary>
+	/// 分数扩展
+	/// </summary>
+	public ScoreAddon scoreAddon = new ScoreAddon();
 
 	#endregion
 

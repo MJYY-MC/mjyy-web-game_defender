@@ -1,24 +1,23 @@
 using Godot;
-using Godot.Collections;
+
 
 public class ScoreChangeShowCreate : Position2D
 {
 	[Export]
 	public PackedScene ScoreChangeShowObject { get; set; }
 
+	Node2D main;
+	public override void _Ready() {
+		main = GetNode<Node2D>("/root/main");
+		DataCore.Instance.gameData.scoreAddon.Score_OnChanged += Score_Changed;
+	}
 
-	private Dictionary<ushort, string> allText = new Dictionary<ushort, string>() {
-		{0,"这是一个测试文本" },
-		{1,"发射蓄力弹" },
-		{2,"发射霰弹" },
-		{3,"命中" },
-	};
 	public void Create(ushort textKey,int score,ushort num) {
 		ScoreChangeShow scsObj = (ScoreChangeShow)ScoreChangeShowObject.Instance();
-		GetTree().CurrentScene.AddChild(scsObj);
+		main.AddChild(scsObj);
 
 		scsObj.Show(
-			allText[textKey]+" "+
+			ScoreAddon.AllText[textKey]+" "+
 			(
 				(score>=0)
 					?"+"
@@ -31,8 +30,11 @@ public class ScoreChangeShowCreate : Position2D
 					:""
 			)
 			);
-		DataCore.Instance.gameData.Score+= score * num;
 
 		scsObj.GlobalPosition = this.GlobalPosition;
+	}
+
+	private void Score_Changed(ScoreAddon.ScoreChangeData scdata) {
+		Create(scdata.TextKey, scdata.ScoreChangeValue, scdata.Many);
 	}
 }
