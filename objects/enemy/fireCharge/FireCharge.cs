@@ -30,6 +30,7 @@ public class FireCharge : RigidBody2D
 	private Tween goneAnim;
 	public override void _Ready() {
 		goneAnim = GetNode<Tween>("goneAnim");
+		doGoneAnimTimer = goneAnim.GetNode<Timer>("doGoneAnimTimer");
 	}
 
 	bool isFlying = true;
@@ -53,41 +54,62 @@ public class FireCharge : RigidBody2D
 		}
 	}
 
+
+	Timer doGoneAnimTimer;
+	byte doGoneAnimTimer_code = 0;
+#pragma warning disable IDE0051
+	private void On_doGoneAnimTimer_timeout() {
+#pragma warning restore IDE0051
+		DoGone(doGoneAnimTimer_code);
+	}
+
 	/// <summary>
 	/// 是否正在执行消失
 	/// </summary>
 	private bool doingGone = false;
-	private async void DoGone() {
-		/*
-		 * 批注：该函数存在await，在游戏结束对象都被销毁时await结束后仍然会执行，会导致其报错：
-		 * E 0:00:05.905   _signal_callback: Resumed after await, but class instance is gone.
-			<C++ 错误>      Condition "conn_target_id && !ObjectDB::get_instance(conn_target_id)" is true. Returned: Variant()
-			<C++ 源文件>     modules/mono/signal_awaiter_utils.cpp:69 @ _signal_callback()
-		 * 后续可选的解决方案：使用Timer节点来实现方法
-		 */
-		if (!doingGone) {
-			doingGone = true;
+	private void DoGone(byte code = 0) {
+		switch (code) {
+			case 0:
+				if (!doingGone) {
+					doingGone = true;
 
-			isFlying = false;
-			await ToSignal(GetTree().CreateTimer(HurtRecoverGravityDelay), "timeout");
-			GravityScale = 1;
+					isFlying = false;
 
-			await ToSignal(GetTree().CreateTimer(GoneAnimationDelay), "timeout");
+					doGoneAnimTimer_code = 1;
+					doGoneAnimTimer.WaitTime = HurtRecoverGravityDelay;
+					doGoneAnimTimer.Start();
+				}
+				break;
+			case 1:
+				GravityScale = 1;
 
-			goneAnim.InterpolateProperty(
-				this,
-				"modulate:a",
-				this.Modulate.a,
-				0f,
-				GoneAnimationDuration,
-				Tween.TransitionType.Linear,
-				Tween.EaseType.In
-				);
-			goneAnim.Start();
-
-			await ToSignal(goneAnim, "tween_all_completed");
-
-			QueueFree();
+				doGoneAnimTimer_code = 2;
+				doGoneAnimTimer.WaitTime = GoneAnimationDelay;
+				doGoneAnimTimer.Start();
+				break;
+			case 2:
+				goneAnim.InterpolateProperty(
+						this,
+						"modulate:a",
+						this.Modulate.a,
+						0f,
+						GoneAnimationDuration,
+						Tween.TransitionType.Linear,
+						Tween.EaseType.In
+						);
+				goneAnim_tac_code = 1;
+				goneAnim.Start();
+				break;
+		}
+	}
+	byte goneAnim_tac_code = 0;
+#pragma warning disable IDE0051
+	private void On_goneAnim_tween_all_completed() {
+#pragma warning restore IDE0051
+		switch (goneAnim_tac_code) {
+			case 1:
+				QueueFree();
+				break;
 		}
 	}
 }

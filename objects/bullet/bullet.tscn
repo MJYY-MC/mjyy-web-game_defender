@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/img/mjyylogo.png" type="Texture" id=1]
 [ext_resource path="res://objects/bullet/Bullet.cs" type="Script" id=2]
-[ext_resource path="res://objects/bullet/Bullet_GoneAnim.cs" type="Script" id=3]
 
 [node name="bullet" type="RigidBody2D" groups=["attackObject", "bullet", "enemyTarget"]]
 collision_mask = 3
@@ -18,7 +17,9 @@ texture = ExtResource( 1 )
 polygon = PoolVector2Array( 9.59988, -9.58416, 9.60691, -6.38399, 6.1889, -4.14824, 6.1875, 5.3125, 5.82021, 5.66564, -0.16749, 9.73609, -0.16749, 5.90161, 3.28355, 3.6894, 3.34254, -1.50191, 0.0684786, 0.621809, -3.26458, -1.5314, -3.26458, 3.45343, -6.21418, 5.42967, -6.19921, -4.25085, -9.53652, -6.2217, -9.5625, -9.65625, -4.875, -6.28125, 0, -9.4375, 4.78125, -6.28125 )
 
 [node name="goneAnim" type="Tween" parent="."]
-script = ExtResource( 3 )
+
+[node name="doGoneAnimTimer" type="Timer" parent="goneAnim"]
+one_shot = true
 
 [node name="goneTimer" type="Timer" parent="."]
 wait_time = 10.0
@@ -26,4 +27,6 @@ one_shot = true
 autostart = true
 
 [connection signal="body_entered" from="." to="." method="OnBulletBody_entered"]
+[connection signal="tween_all_completed" from="goneAnim" to="." method="On_goneAnim_tween_all_completed"]
+[connection signal="timeout" from="goneAnim/doGoneAnimTimer" to="." method="On_doGoneAnimTimer_timeout"]
 [connection signal="timeout" from="goneTimer" to="." method="OnGoneTimer_timeout"]

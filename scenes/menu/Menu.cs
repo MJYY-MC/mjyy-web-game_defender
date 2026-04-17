@@ -30,9 +30,11 @@ public class Menu : Control {
             DataCore.Instance.gameData.GameState != GameData.GameStateEnum.loading
 			&& DataCore.Instance.gameData.GameState != GameData.GameStateEnum.running
            ) {
-            DataCore.Instance.gameData.GameState = GameData.GameStateEnum.loading;
+            if (DataCore.Instance.gameData.GameState == GameData.GameStateEnum.over)
+                DataCore.Instance.InitData();
+			DataCore.Instance.gameData.GameState = GameData.GameStateEnum.loading;
 
-            DataCore.Instance.gameData.Setting.touchButton = mainBox.GetNode<CheckButton>("touchButtonCheck").Pressed;
+			DataCore.Instance.gameData.Setting.touchButton = mainBox.GetNode<CheckButton>("touchButtonCheck").Pressed;
 
             GetTree().ChangeScene("res://scenes/main/main.tscn");
         }

@@ -21,4 +21,9 @@ shape = SubResource( 1 )
 
 [node name="goneAnim" type="Tween" parent="."]
 
+[node name="doGoneAnimTimer" type="Timer" parent="goneAnim"]
+one_shot = true
+
 [connection signal="body_entered" from="." to="." method="OnFireCharge_bodyEntered"]
+[connection signal="tween_all_completed" from="goneAnim" to="." method="On_goneAnim_tween_all_completed"]
+[connection signal="timeout" from="goneAnim/doGoneAnimTimer" to="." method="On_doGoneAnimTimer_timeout"]
