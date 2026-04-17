@@ -25,6 +25,10 @@ public class player : Node2D {
 	}
 
 	/// <summary>
+	/// 是否正在蓄力
+	/// </summary>
+	bool readyShoot_isKeyDown = false;
+	/// <summary>
 	/// 蓄力射击蓄力时间（秒）
 	/// </summary>
 	float readyShootTime = 0f;
@@ -36,14 +40,6 @@ public class player : Node2D {
 	/// 蓄力射击的基础速度，蓄力时间乘以该值即为子弹初速度（像素/秒）
 	/// </summary>
 	[Export] public float readyShootBasicSpeed = 2000f;
-	/// <summary>
-	/// 当前按键松开的时间，用于容错判断
-	/// </summary>
-	float readyShootTime_shootTolerance_pressTime = 0f;
-	/// <summary>
-	/// 按键松开后的容错时间，避免帧数不稳定时判断按键松开
-	/// </summary>
-	float readyShootTime_shootTolerance_pressTimeMax; //= 0.05f;
 	public override void _Process(float delta) {
 		if(DataCore.Instance.gameData.GameState==GameData.GameStateEnum.running){
 			{
@@ -71,9 +67,7 @@ public class player : Node2D {
 						(readyShootTime / readyShootTimeMax)
 						);
 
-				if (Input.IsActionPressed("key_down")) {
-					readyShootTime_shootTolerance_pressTime = 0f;
-
+				if (readyShoot_isKeyDown) {
 					float rst = readyShootTime + delta;
 					if (rst > readyShootTimeMax) {
 						readyShootTime = readyShootTimeMax;
@@ -85,17 +79,11 @@ public class player : Node2D {
 						updataPlayer();
 					}
 				}
-				else {
-					if (readyShootTime != 0) {
-						readyShootTime_shootTolerance_pressTime += delta;
-						readyShootTime_shootTolerance_pressTimeMax = delta*4;//根据帧时间动态调整容错时间
-						if (readyShootTime_shootTolerance_pressTime > readyShootTime_shootTolerance_pressTimeMax) {
-							float rst = readyShootTime;
-							readyShootTime = 0f;
-							ShootBullet(rst * readyShootBasicSpeed);
-							updataPlayer();
-						}
-					}
+				else if (readyShootTime >= 0.1) {//至少蓄力0.1秒才允许射击
+					float rst = readyShootTime;
+					readyShootTime = 0f;
+					ShootBullet(rst * readyShootBasicSpeed);
+					updataPlayer();
 				}
 			}
 		}
@@ -104,9 +92,12 @@ public class player : Node2D {
 	public override void _Input(InputEvent ie) {
 		if (DataCore.Instance.gameData.GameState == GameData.GameStateEnum.running) {
 			if (ie.IsActionPressed("key_up"))
-				ShootBullet(1000);
-			/*else if (ie.IsActionPressed("key_down"))
-				ShootBullet(500);*/
+				ShotBullet();
+		}
+		if (ie.IsActionPressed("key_down")) {
+			readyShoot_isKeyDown = true;
+		}else if (ie.IsActionReleased("key_down")) {
+			readyShoot_isKeyDown = false;
 		}
 	}
 
@@ -121,11 +112,6 @@ public class player : Node2D {
 	/// </summary>
 	/// <param name="bulletSpeed">子弹初速度（像素/秒）</param>
 	private void ShootBullet(float bulletSpeed) {
-		if (BulletObject == null && OS.IsDebugBuild()) {
-			GD.PrintErr("错误: BulletObject为null");
-			return;
-		}
-
 		DataCore.Instance.gameData.Score -= 1;
 
 		var bulletObj = (RigidBody2D)BulletObject.Instance();
@@ -137,5 +123,40 @@ public class player : Node2D {
 		bulletObj.LinearVelocity = 
 			new Vector2(Mathf.Cos(degRad), Mathf.Sin(degRad)) 
 			* bulletSpeed;
+	}
+	/// <summary>
+	/// 发射霰弹
+	/// </summary>
+	private void ShotBullet() {
+		float getRd(float rd,byte id) {
+			switch (id) {
+				case 0:
+					return rd - 60;
+				case 1:
+					return rd - 40;
+				case 2:
+					return rd - 20;
+				case 3:
+					return rd + 20;
+				case 4:
+					return rd + 40;
+				case 5:
+					return rd + 60;
+			}
+			throw new System.Exception("错误的id");
+		}
+		DataCore.Instance.gameData.Score -= 18;
+
+		RigidBody2D[] bulletObjs = new RigidBody2D[6];
+
+		for(byte i=0; i < bulletObjs.Length; i++) {
+			bulletObjs[i] = (RigidBody2D)BulletObject.Instance();
+			GetTree().CurrentScene.AddChild(bulletObjs[i]);
+			bulletObjs[i].GlobalPosition = GetNode<Position2D>("muzzle").GlobalPosition;
+			float degRad = Mathf.Deg2Rad(getRd(RotationDegrees, i));
+			bulletObjs[i].LinearVelocity =
+				new Vector2(Mathf.Cos(degRad), Mathf.Sin(degRad))
+				* 1500;
+		}
 	}
 }
