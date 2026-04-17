@@ -3,11 +3,20 @@ using System;
 
 public class Menu : Control {
     Label about;
-    public override void _Ready() {
+	private VBoxContainer mainBox;
+	private Label overScore;
+	public override void _Ready() {
         about = GetNode<Label>("about");
-
         LoadAbout();
-    }
+		mainBox = GetNode<VBoxContainer>("mainBox");
+		overScore = mainBox.GetNode<Label>("overScore");
+
+		if (DataCore.Instance.gameData.GameState == GameData.GameStateEnum.over) {
+			overScore.Text = overScore.Text
+				.Replace("{value}", DataCore.Instance.gameData.Score.ToString());
+            overScore.Visible = true;
+		}
+	}
 
     void LoadAbout() {
         about.Text =
@@ -23,7 +32,7 @@ public class Menu : Control {
            ) {
             DataCore.Instance.gameData.GameState = GameData.GameStateEnum.loading;
 
-            DataCore.Instance.gameData.Setting.touchButton = GetNode<VBoxContainer>("mainBox").GetNode<CheckButton>("touchButtonCheck").Pressed;
+            DataCore.Instance.gameData.Setting.touchButton = mainBox.GetNode<CheckButton>("touchButtonCheck").Pressed;
 
             GetTree().ChangeScene("res://scenes/main/main.tscn");
         }
