@@ -3,19 +3,56 @@ using System;
 
 public class Bullet : RigidBody2D
 {
+	Player player;
 	public override void _Ready() {
 		goneAnim = GetNode<Tween>("goneAnim");
-
 		doGoneAnimTimer = goneAnim.GetNode<Timer>("doGoneAnimTimer");
+		player = GetNode<Player>("/root/main/player");
 
 		PlayShowAnim();
 	}
+
+	/// <summary>
+	/// 表示该子弹命中的敌方次数，用于计算单发连续击中
+	/// </summary>
+	private ushort oneShotComboHitNum = 0;
+
+	/// <summary>
+	/// 击中得分，得分因子弹类型而异
+	/// </summary>
+	private int hitScore = 0;
 
 #pragma warning disable IDE0051
 	private void OnBulletBody_entered(object body) {
 #pragma warning restore IDE0051
 		if (body is Node nodeObj) {
+			if (!this.IsInGroup("bullet_notFirst")) {
+				this.AddToGroup("bullet_notFirst");//打上该组则表示该子弹已经命中过某个目标一次了
+
+				player.BulletFirstHitFeedback(
+					nodeObj.IsInGroup("enemy") && !nodeObj.IsInGroup("enemy_byBulletHit") && this.IsInGroup("bullet_aloneMode")
+					);
+			}
 			if (nodeObj.IsInGroup("bulletTarget")) {
+				if (nodeObj.IsInGroup("enemy")) {
+					if (!nodeObj.IsInGroup("enemy_byBulletHit")) {
+						nodeObj.AddToGroup("enemy_byBulletHit");//表示该敌方已被子弹命中过了
+						oneShotComboHitNum++;
+
+						if (hitScore == 0) {
+							if (this.IsInGroup("bullet_aloneMode"))
+								hitScore = 10;
+							else if (this.IsInGroup("bullet_shotMode"))
+								hitScore = 5;
+						}
+
+						DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
+							TextKey = ((oneShotComboHitNum == 1) ? (ushort)3 : (ushort)5),
+							ScoreChangeValue = hitScore,
+							Mult = oneShotComboHitNum,
+						});
+					}
+				}
 				PlayGoneAnim();
 			}
 		}

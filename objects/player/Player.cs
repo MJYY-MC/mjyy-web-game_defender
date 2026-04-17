@@ -1,6 +1,6 @@
 using Godot;
 
-public class player : Node2D {
+public class Player : Node2D {
 	/// <summary>
 	/// 旋转速度（弧度/秒）
 	/// </summary>
@@ -122,6 +122,7 @@ public class player : Node2D {
 
 		GetTree().CurrentScene.AddChild(bulletObj);
 		bulletObj.GlobalPosition = GetNode<Position2D>("muzzle").GlobalPosition;
+		bulletObj.AddToGroup("bullet_aloneMode");//单发射击模式
 
 		float degRad = Mathf.Deg2Rad(RotationDegrees);
 		bulletObj.LinearVelocity = 
@@ -151,9 +152,9 @@ public class player : Node2D {
 		}
 		DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
 			TextKey = 2,
-			ScoreChangeValue = -3,
+			ScoreChangeValue = -1,
 			Mult = 6,
-		});//DataCore.Instance.gameData.Score -= 18;
+		});
 
 		RigidBody2D[] bulletObjs = new RigidBody2D[6];
 
@@ -161,10 +162,33 @@ public class player : Node2D {
 			bulletObjs[i] = (RigidBody2D)BulletObject.Instance();
 			GetTree().CurrentScene.AddChild(bulletObjs[i]);
 			bulletObjs[i].GlobalPosition = GetNode<Position2D>("muzzle").GlobalPosition;
+			bulletObjs[i].AddToGroup("bullet_shotMode");//霰弹射击模式
 			float degRad = Mathf.Deg2Rad(getRd(RotationDegrees, i));
 			bulletObjs[i].LinearVelocity =
 				new Vector2(Mathf.Cos(degRad), Mathf.Sin(degRad))
 				* 1500;
 		}
+	}
+
+	/// <summary>
+	/// 子弹首次击中敌方的连续次数
+	/// </summary>
+	private ushort firstComboHitNum=0;
+	/// <summary>
+	/// 子弹首次击中反馈
+	/// 用于判断连续完美击中
+	/// </summary>
+	/// <param name="isEnemy">首次击中的目标是否是敌方</param>
+	public void BulletFirstHitFeedback(bool isEnemy) {
+		if (isEnemy) {
+			firstComboHitNum++;
+			DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
+				TextKey = ((firstComboHitNum == 1) ? (ushort)4 : (ushort)6),
+				ScoreChangeValue = 15,
+				Mult = firstComboHitNum,
+			});
+		}
+		else
+			firstComboHitNum = 0;
 	}
 }
