@@ -49,7 +49,31 @@ public class FireCharge : RigidBody2D
 #pragma warning restore IDE0051
 		if (body is Node nodeObj) {
 			if (nodeObj.IsInGroup("bullet") && !doingGone)
-				DataCore.Instance.gameData.Score += 10;
+				/*
+				 * 目前该行会报错：
+				 * E 0:00:06.095   body_set_shape_disabled: Can't change this state while flushing queries. Use call_deferred() or set_deferred() to change monitoring state instead.
+  <C++ 错误>      Condition "body->get_space() && flushing_queries" is true.
+  <C++ 源文件>     servers/physics_2d/physics_2d_server_sw.cpp:652 @ body_set_shape_disabled()
+  <栈追踪>         :0 @ void Godot.NativeCalls.godot_icall_2_453(IntPtr , IntPtr , IntPtr , Boolean )()
+                Node.cs:597 @ void Godot.Node.AddChild(Godot.Node , Boolean )()
+                ScoreChangeShowCreate.cs:18 @ void ScoreChangeShowCreate.Create(UInt16 , Int32 , UInt16 )()
+                FireCharge.cs:54 @ void FireCharge.OnFireCharge_bodyEntered(System.Object )()
+				* E 0:00:06.095   body_set_shape_as_one_way_collision: Can't change this state while flushing queries. Use call_deferred() or set_deferred() to change monitoring state instead.
+  <C++ 错误>      Condition "body->get_space() && flushing_queries" is true.
+  <C++ 源文件>     servers/physics_2d/physics_2d_server_sw.cpp:660 @ body_set_shape_as_one_way_collision()
+  <栈追踪>         :0 @ void Godot.NativeCalls.godot_icall_2_453(IntPtr , IntPtr , IntPtr , Boolean )()
+                Node.cs:597 @ void Godot.Node.AddChild(Godot.Node , Boolean )()
+                ScoreChangeShowCreate.cs:18 @ void ScoreChangeShowCreate.Create(UInt16 , Int32 , UInt16 )()
+                FireCharge.cs:54 @ void FireCharge.OnFireCharge_bodyEntered(System.Object )()
+				* E 0:00:06.095   body_set_shape_as_one_way_collision: Can't change this state while flushing queries. Use call_deferred() or set_deferred() to change monitoring state instead.
+  <C++ 错误>      Condition "body->get_space() && flushing_queries" is true.
+  <C++ 源文件>     servers/physics_2d/physics_2d_server_sw.cpp:660 @ body_set_shape_as_one_way_collision()
+  <栈追踪>         :0 @ void Godot.NativeCalls.godot_icall_2_453(IntPtr , IntPtr , IntPtr , Boolean )()
+                Node.cs:597 @ void Godot.Node.AddChild(Godot.Node , Boolean )()
+                ScoreChangeShowCreate.cs:18 @ void ScoreChangeShowCreate.Create(UInt16 , Int32 , UInt16 )()
+                FireCharge.cs:54 @ void FireCharge.OnFireCharge_bodyEntered(System.Object )()
+				 */
+				GetNode<ScoreChangeShowCreate>("/root/main/scoreChangeShow_create").Create(3, 10, 1);//DataCore.Instance.gameData.Score += 10;
 			DoGone();
 		}
 	}
