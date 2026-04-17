@@ -2,6 +2,14 @@ using System;
 
 public class GameData{
 
+	public class GameSetting {
+		/// <summary>
+		/// 触摸按钮是否启用
+		/// </summary>
+		public bool? touchButton = null;
+	}
+	public GameSetting Setting { get; set; } = new GameSetting();
+
 	public enum GameStateEnum {
 		menu,
 		loading,

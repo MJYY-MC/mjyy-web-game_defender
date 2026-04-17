@@ -9,6 +9,7 @@ public class Main : Node2D
     {
 		fireCharge_spawn = GetNode<Timer>("fireCharge_spawn");
 
+		GetNode<CanvasLayer>("touchLayer").Visible = DataCore.Instance.gameData.Setting.touchButton == true;
 		DataCore.Instance.gameData.GameState = GameData.GameStateEnum.ready;
 		StartGame();
 	}

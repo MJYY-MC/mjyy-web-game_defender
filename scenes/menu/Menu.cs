@@ -23,6 +23,8 @@ public class Menu : Control {
            ) {
             DataCore.Instance.gameData.GameState = GameData.GameStateEnum.loading;
 
+            DataCore.Instance.gameData.Setting.touchButton = GetNode<VBoxContainer>("mainBox").GetNode<CheckButton>("touchButtonCheck").Pressed;
+
             GetTree().ChangeScene("res://scenes/main/main.tscn");
         }
     }

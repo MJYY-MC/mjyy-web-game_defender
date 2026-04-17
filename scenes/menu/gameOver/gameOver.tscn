@@ -35,6 +35,7 @@ align = 1
 margin_top = 401.0
 margin_right = 380.0
 margin_bottom = 426.0
+button_mask = 3
 text = "重新开始"
 
 [connection signal="pressed" from="VBoxContainer/restartGameBtn" to="." method="On_restartGameBtn_pressed"]
