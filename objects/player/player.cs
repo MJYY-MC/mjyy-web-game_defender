@@ -126,6 +126,8 @@ public class player : Node2D {
 			return;
 		}
 
+		DataCore.Instance.gameData.Score -= 1;
+
 		var bulletObj = (RigidBody2D)BulletObject.Instance();
 
 		GetTree().CurrentScene.AddChild(bulletObj);

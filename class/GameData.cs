@@ -10,6 +10,7 @@ public class GameData{
 	}
 	public GameSetting Setting { get; set; } = new GameSetting();
 
+	#region state
 	public enum GameStateEnum {
 		menu,
 		loading,
@@ -21,7 +22,9 @@ public class GameData{
 	/// 当前游戏状态
 	/// </summary>
 	public GameStateEnum GameState { get; set; } = GameStateEnum.menu;
+	#endregion
 
+	#region health
 	/// <summary>
 	/// 主的最大血量
 	/// </summary>
@@ -50,6 +53,26 @@ public class GameData{
 	/// </summary>
 	/// <returns>返回血量百分比（小数形式）</returns>
 	public float GetHomeHealthPercent() => HomeHealth / HomeHealthMax;
+	#endregion
+
+	#region score
+	private int score=0;
+	/// <summary>
+	/// 当得分改变后触发
+	/// </summary>
+	public Action<int> Score_OnChanged=null;
+	/// <summary>
+	/// 得分
+	/// </summary>
+	public int Score {
+		get => score;
+		set {
+			score = value;
+			Score_OnChanged?.Invoke(Score);
+		}
+	}
+
+	#endregion
 
 	public GameData() {
 		homeHealth = HomeHealthMax;

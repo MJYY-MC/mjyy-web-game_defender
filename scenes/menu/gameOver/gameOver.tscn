@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="mainBox" type="VBoxContainer" parent="."]
 margin_left = 450.0
 margin_right = 830.0
 margin_bottom = 720.0
@@ -22,20 +22,35 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 294.0
+[node name="Label" type="Label" parent="mainBox"]
+margin_top = 275.0
 margin_right = 380.0
-margin_bottom = 397.0
+margin_bottom = 325.0
 custom_fonts/font = SubResource( 1 )
-text = "游戏结束
-"
+text = "游戏结束"
 align = 1
 
-[node name="restartGameBtn" type="Button" parent="VBoxContainer"]
-margin_top = 401.0
+[node name="overScore" type="Label" parent="mainBox"]
+margin_top = 329.0
 margin_right = 380.0
-margin_bottom = 426.0
+margin_bottom = 348.0
+text = "最终得分：{value}"
+align = 1
+autowrap = true
+
+[node name="Label2" type="Label" parent="mainBox"]
+margin_top = 352.0
+margin_right = 380.0
+margin_bottom = 415.0
+text = "
+
+"
+
+[node name="restartGameBtn" type="Button" parent="mainBox"]
+margin_top = 419.0
+margin_right = 380.0
+margin_bottom = 444.0
 button_mask = 3
 text = "重新开始"
 
-[connection signal="pressed" from="VBoxContainer/restartGameBtn" to="." method="On_restartGameBtn_pressed"]
+[connection signal="pressed" from="mainBox/restartGameBtn" to="." method="On_restartGameBtn_pressed"]

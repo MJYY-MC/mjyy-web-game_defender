@@ -47,9 +47,9 @@ public class FireCharge : RigidBody2D
 	private void OnFireCharge_bodyEntered(object body) {
 #pragma warning restore IDE0051
 		if (body is Node nodeObj) {
-			//if (nodeObj.IsInGroup("enemyTarget")) {
-				DoGone();
-			//}
+			if (nodeObj.IsInGroup("bullet") && !doingGone)
+				DataCore.Instance.gameData.Score += 10;
+			DoGone();
 		}
 	}
 

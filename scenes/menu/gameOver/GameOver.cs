@@ -3,10 +3,16 @@ using System;
 
 public class GameOver : Control
 {
+	private VBoxContainer mainBox;
+	private Label overScore;
     public override void _Ready()
     {
-        
-    }
+		mainBox = GetNode<VBoxContainer>("mainBox");
+		overScore = mainBox.GetNode<Label>("overScore");
+
+		overScore.Text = overScore.Text
+			.Replace("{value}", DataCore.Instance.gameData.Score.ToString());
+	}
 
 #pragma warning disable IDE0051
 	private void On_restartGameBtn_pressed() {
