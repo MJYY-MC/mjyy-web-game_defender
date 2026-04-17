@@ -1,5 +1,5 @@
 ﻿public struct About {
-	public const string version = "0.0.0.20260416-beta";
+	public const string version = "0.1.0.20260417-beta";
 
 	public const string author = "Hgnim";
 
