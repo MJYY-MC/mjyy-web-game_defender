@@ -5,7 +5,7 @@ public class player : Node2D {
 	/// 旋转速度（弧度/秒）
 	/// </summary>
 	[Export]
-	public float RotationSpeed = 5.0f;
+	public float RotationSpeed = 2.5f;
 
 	/// <summary>
 	/// 可旋转角度最小值
@@ -115,7 +115,7 @@ public class player : Node2D {
 		DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
 			TextKey=1,
 			ScoreChangeValue= -1,
-			Many= 1,
+			Mult= 1,
 		});//DataCore.Instance.gameData.Score -= 1;
 
 		var bulletObj = (RigidBody2D)BulletObject.Instance();
@@ -152,7 +152,7 @@ public class player : Node2D {
 		DataCore.Instance.gameData.scoreAddon.ChangeScore(new ScoreAddon.ScoreChangeData() {
 			TextKey = 2,
 			ScoreChangeValue = -3,
-			Many = 6,
+			Mult = 6,
 		});//DataCore.Instance.gameData.Score -= 18;
 
 		RigidBody2D[] bulletObjs = new RigidBody2D[6];

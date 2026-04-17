@@ -35,6 +35,8 @@ public class ScoreChangeShowCreate : Position2D
 	}
 
 	private void Score_Changed(ScoreAddon.ScoreChangeData scdata) {
-		Create(scdata.TextKey, scdata.ScoreChangeValue, scdata.Many);
+		//Create(scdata.TextKey, scdata.ScoreChangeValue, scdata.Mult);
+		//可能会影响到引擎遍历碰撞对象，等待到当前物理帧安全时执行
+		CallDeferred(nameof(Create), scdata.TextKey, scdata.ScoreChangeValue, scdata.Mult);
 	}
 }

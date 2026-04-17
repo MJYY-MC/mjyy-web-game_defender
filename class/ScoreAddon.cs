@@ -29,7 +29,7 @@ public class ScoreAddon {
 		/// <summary>
 		/// 分数更改值的倍数，用于一些需要翻倍的地方
 		/// </summary>
-		public ushort Many {  get; set; }
+		public ushort Mult {  get; set; }
 	}
 
 	/// <summary>
@@ -42,7 +42,7 @@ public class ScoreAddon {
 	/// </summary>
 	/// <param name="data">分数更改的详细数据</param>
 	public void ChangeScore(ScoreChangeData data) {
-		DataCore.Instance.gameData.Score += data.ScoreChangeValue * data.Many;
+		DataCore.Instance.gameData.Score += data.ScoreChangeValue * data.Mult;
 		Score_OnChanged?.Invoke(data);
 	}
 }
