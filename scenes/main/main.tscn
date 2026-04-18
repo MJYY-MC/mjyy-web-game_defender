@@ -85,5 +85,7 @@ text = "0"
 
 [node name="scoreChangeShow_create" parent="." instance=ExtResource( 9 )]
 position = Vector2( 640, 50 )
+PosXMin = 200.0
+PosXMax = 1040.0
 
 [connection signal="timeout" from="fireCharge_spawn" to="fireCharge_spawn" method="OnFireChargeSpawn_timeout"]

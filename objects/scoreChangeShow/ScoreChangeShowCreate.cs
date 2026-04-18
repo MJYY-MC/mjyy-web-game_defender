@@ -5,6 +5,16 @@ public class ScoreChangeShowCreate : Position2D
 {
 	[Export]
 	public PackedScene ScoreChangeShowObject { get; set; }
+	/// <summary>
+	/// 生成位置浮动的x最小值
+	/// </summary>
+	[Export]
+	public float PosXMin { get; set; }
+	/// <summary>
+	/// 生成位置浮动的x最大值
+	/// </summary>
+	[Export]
+	public float PosXMax { get; set; }
 
 	Node2D main;
 	public override void _Ready() {
@@ -31,7 +41,7 @@ public class ScoreChangeShowCreate : Position2D
 			)
 			);
 
-		scsObj.GlobalPosition = this.GlobalPosition;
+		scsObj.GlobalPosition = new Vector2( (float)GD.RandRange(PosXMin,PosXMax) , this.GlobalPosition.y);
 	}
 
 	private void Score_Changed(ScoreAddon.ScoreChangeData scdata) {
