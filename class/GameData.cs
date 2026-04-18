@@ -78,6 +78,22 @@ public class GameData{
 
 	#endregion
 
+	private ushort level=0;
+	/// <summary>
+	/// 敌方等级改变后触发
+	/// </summary>
+	public Action<ushort> Level_OnChanged = null;
+	/// <summary>
+	/// 当前敌方等级
+	/// </summary>
+	public ushort Level {
+		get => level;
+		set {
+			level = value;
+			Level_OnChanged?.Invoke(Level);
+		}
+	}
+
 	public GameData() {
 		homeHealth = HomeHealthMax;
 	}

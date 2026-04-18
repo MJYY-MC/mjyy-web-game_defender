@@ -31,16 +31,15 @@ public class Level : Timer
 		LevelUpdate();
 	}
     
-    ushort level = 0;
 #pragma warning disable IDE0051
 	private void On_level_timeout() {
 #pragma warning restore IDE0051
-        level++;
+        DataCore.Instance.gameData.Level++;
         LevelUpdate();
 	}
 
 	void LevelUpdate() {
-		switch (level) {
+		switch (DataCore.Instance.gameData.Level) {
             case 0:
 				enemySpawns[0].WaitTime = 4;
 				enemySpawn0_objBasicSpeed = 100;
