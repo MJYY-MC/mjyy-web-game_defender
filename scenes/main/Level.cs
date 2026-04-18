@@ -8,7 +8,12 @@ public class Level : Timer
 	/// </summary>
 	[Export]
 	public PackedScene FireChargeObject { get; set; }
-	
+	/// <summary>
+	/// 箭矢对象资源
+	/// </summary>
+	[Export]
+	public PackedScene ArrowObject { get; set; }
+
 	const ushort enemySpawnNum= 5;
 	Timer[] enemySpawns=new Timer[enemySpawnNum];
     Position2D[] enemySpawns_pos=new Position2D[enemySpawnNum];
@@ -35,7 +40,7 @@ public class Level : Timer
 	}
 
 	void LevelUpdate() {
-        switch (level) {
+		switch (level) {
             case 0:
 				enemySpawns[0].WaitTime = 4;
 				enemySpawn0_objBasicSpeed = 100;
@@ -70,6 +75,15 @@ public class Level : Timer
 			case 9:
 				enemySpawn1_objBasicSpeed = 350;
 				break;
+			case 10:
+				enemySpawns[2].WaitTime = 8;
+				enemySpawn2_objBasicSpeed = 100;
+				enemySpawns[2].Start();
+				break;
+			case 11:
+				enemySpawns[3].WaitTime = 8;
+				enemySpawns[3].Start();
+				break;
 		}
 	}
 
@@ -90,5 +104,28 @@ public class Level : Timer
 		fcObj.BasicSpeed = enemySpawn1_objBasicSpeed;
 		GetTree().CurrentScene.AddChild(fcObj);
 		fcObj.GlobalPosition = enemySpawns_pos[1].GlobalPosition;
+	}
+	float enemySpawn2_objBasicSpeed = 100;
+#pragma warning disable IDE0051
+	private void On_enemySpawn2_timeout() {
+#pragma warning restore IDE0051
+		FireCharge fcObj = (FireCharge)FireChargeObject.Instance();
+		fcObj.BasicSpeed = enemySpawn2_objBasicSpeed;
+		fcObj.MoveDirection = new Vector2(-1, 0.5f);
+		GetTree().CurrentScene.AddChild(fcObj);
+		fcObj.GlobalPosition = enemySpawns_pos[2].GlobalPosition;
+	}
+#pragma warning disable IDE0051
+	private void On_enemySpawn3_timeout() {
+#pragma warning restore IDE0051
+		RigidBody2D arObj = (RigidBody2D)ArrowObject.Instance();
+
+		GetTree().CurrentScene.AddChild(arObj);
+		arObj.GlobalPosition = enemySpawns_pos[3].GlobalPosition;
+
+		float degRad = Mathf.Deg2Rad((float)GD.RandRange(180,260));//取一定范围内的随机角度，增加不确定性
+		arObj.LinearVelocity =
+			new Vector2(Mathf.Cos(degRad), Mathf.Sin(degRad))
+			* Arrow.CalculateSpeed(arObj.GlobalPosition, new Vector2(66, 654), degRad);//通过已有条件计算初速度，并指定落点
 	}
 }

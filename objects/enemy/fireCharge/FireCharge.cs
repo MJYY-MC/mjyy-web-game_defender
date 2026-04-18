@@ -10,6 +10,12 @@ public class FireCharge : RigidBody2D
 	public float BasicSpeed = 100f;
 
 	/// <summary>
+	/// 移动方向
+	/// </summary>
+	[Export]
+	public Vector2 MoveDirection=new Vector2(-1,0);
+
+	/// <summary>
 	/// 消失动画持续时间
 	/// </summary>
 	[Export]
@@ -36,11 +42,7 @@ public class FireCharge : RigidBody2D
 	bool isFlying = true;
 	public override void _IntegrateForces(Physics2DDirectBodyState state) {
 		if (isFlying) {
-			Vector2 currentVelocity = state.LinearVelocity;
-
-			currentVelocity.x = -BasicSpeed;
-
-			state.LinearVelocity = currentVelocity;
+			state.LinearVelocity = new Vector2(MoveDirection.x * BasicSpeed, MoveDirection.y * BasicSpeed);
 		}
 	}
 

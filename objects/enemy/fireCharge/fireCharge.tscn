@@ -8,7 +8,7 @@ radius = 12.9974
 
 [node name="fireCharge" type="RigidBody2D" groups=["attackObject", "bulletTarget", "enemy"]]
 gravity_scale = 0.0
-contacts_reported = 3
+contacts_reported = 1
 contact_monitor = true
 script = ExtResource( 2 )
 
