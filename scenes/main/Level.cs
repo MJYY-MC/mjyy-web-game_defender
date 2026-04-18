@@ -81,8 +81,69 @@ public class Level : Timer
 				enemySpawns[2].Start();
 				break;
 			case 11:
-				enemySpawns[3].WaitTime = 8;
+				enemySpawns[3].WaitTime = 10;
 				enemySpawns[3].Start();
+				break;
+			case 12:
+				enemySpawns[4].WaitTime = 8;
+				enemySpawn4_objBasicSpeed = 100;
+				enemySpawns[4].Start();
+				break;
+			case 13:
+				enemySpawns[0].WaitTime = 0.5f;
+				enemySpawn0_objBasicSpeed = 400;
+				break;
+			case 14:
+				enemySpawns[2].WaitTime = 6;
+				enemySpawn2_objBasicSpeed = 200;
+				break;
+			case 15:
+				enemySpawns[1].WaitTime = 1;
+				enemySpawn1_objBasicSpeed = 450;
+				break;
+			case 16:
+				enemySpawns[4].WaitTime = 6;
+				enemySpawn4_objBasicSpeed = 150;
+				break;
+			case 17:
+				enemySpawns[3].WaitTime = 8;
+				break;
+			case 18:
+				enemySpawns[2].WaitTime = 4;
+				enemySpawn2_objBasicSpeed = 300;
+				break;
+			case 19:
+				enemySpawns[3].WaitTime = 6;
+				break;
+			case 20:
+				enemySpawns[4].WaitTime = 4;
+				enemySpawn4_objBasicSpeed = 250;
+				break;
+			case 21:
+				enemySpawns[3].WaitTime = 4;
+				break;
+			case 22:
+				enemySpawns[2].WaitTime = 2;
+				enemySpawn2_objBasicSpeed = 400;
+				break;
+			case 23:
+				enemySpawns[3].WaitTime = 2;
+				break;
+			case 24:
+				enemySpawns[4].WaitTime = 2;
+				enemySpawn4_objBasicSpeed = 350;
+				break;
+			case 25:
+				enemySpawns[3].WaitTime = 1;
+				break;
+			case 26:
+				enemySpawns[2].WaitTime = 0.5f;
+				break;
+			case 27:
+				enemySpawns[4].WaitTime = 0.5f;
+				break;
+			case 28:
+				enemySpawns[3].WaitTime = 0.5f;
 				break;
 		}
 	}
@@ -126,6 +187,16 @@ public class Level : Timer
 		float degRad = Mathf.Deg2Rad((float)GD.RandRange(180,260));//取一定范围内的随机角度，增加不确定性
 		arObj.LinearVelocity =
 			new Vector2(Mathf.Cos(degRad), Mathf.Sin(degRad))
-			* Arrow.CalculateSpeed(arObj.GlobalPosition, new Vector2(66, 654), degRad);//通过已有条件计算初速度，并指定落点
+			* Arrow.CalculateSpeed(arObj.GlobalPosition, new Vector2((float)GD.RandRange(46,86), (float)GD.RandRange(634,674)/*目标点进行随机浮动，避免射击过于精准*/), degRad);//通过已有条件计算初速度，并指定落点
+	}
+	float enemySpawn4_objBasicSpeed = 100;
+#pragma warning disable IDE0051
+	private void On_enemySpawn4_timeout() {
+#pragma warning restore IDE0051
+		FireCharge fcObj = (FireCharge)FireChargeObject.Instance();
+		fcObj.BasicSpeed = enemySpawn4_objBasicSpeed;
+		fcObj.MoveDirection = new Vector2(-0.5f, 1);
+		GetTree().CurrentScene.AddChild(fcObj);
+		fcObj.GlobalPosition = enemySpawns_pos[4].GlobalPosition;
 	}
 }

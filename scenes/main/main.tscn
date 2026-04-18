@@ -117,10 +117,11 @@ position = Vector2( 1350, 400 )
 wait_time = 5.0
 
 [node name="pos" type="Position2D" parent="level/enemySpawn4"]
-position = Vector2( 1350, 660 )
+position = Vector2( 475, -50 )
 
 [connection signal="timeout" from="level" to="level" method="On_level_timeout"]
 [connection signal="timeout" from="level/enemySpawn0" to="level" method="On_enemySpawn0_timeout"]
 [connection signal="timeout" from="level/enemySpawn1" to="level" method="On_enemySpawn1_timeout"]
 [connection signal="timeout" from="level/enemySpawn2" to="level" method="On_enemySpawn2_timeout"]
 [connection signal="timeout" from="level/enemySpawn3" to="level" method="On_enemySpawn3_timeout"]
+[connection signal="timeout" from="level/enemySpawn4" to="level" method="On_enemySpawn4_timeout"]
